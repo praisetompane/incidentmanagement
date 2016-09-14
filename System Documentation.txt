@@ -1,0 +1,10 @@
+Admin Page
+  user: admin
+  password:
+
+
+Analysis
+
+  UAM (User Access Management)
+    Django.contrib.Auth
+    Django Admin page
