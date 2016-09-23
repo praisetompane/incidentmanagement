@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Maintenance Request Successful{% endblock %}
+{% block head %}
+    Maintenance Request Saved Successfully
+{% endblock %}
+{% block content %}
+    Thank you for logging you request, your reference number is: {{form.referenceNumber}}.
+    An email has also been sent to {{form.email}} with this reference for future enquiries.
+{% endblock %}

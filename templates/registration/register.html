@@ -14,7 +14,8 @@
                         <form method="post" action=".">
                             {% csrf_token %}
                             <table border="0">
-                                {{ form.as_table }}
+                                {{ userForm.as_table }}
+                                {{ profileForm.as_table }}
                             </table>
                             <div class="row center-block">
                                 <input type="submit" value="Register"/>
