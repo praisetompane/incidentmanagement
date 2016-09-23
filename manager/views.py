@@ -7,6 +7,7 @@ from django.shortcuts import render
 from django.shortcuts import render_to_response
 from django.utils.crypto import get_random_string
 from django.views.decorators.csrf import csrf_exempt
+from django.core.mail import send_mail
 
 from manager.forms import *
 
@@ -63,15 +64,15 @@ def maintenance(request):
             maintenanceRequest = form.save(commit=False)
             maintenanceRequest.referenceNumber = referenceNo
             maintenanceRequest.save()
-            '''
-                 send_mail(
+
+            send_mail(
                 'Maintenance Request',
                 'Thank you for logging you request, your reference number is:' + referenceNo,
                 'ssms@example.com',
                 [user.email],
                 fail_silently=False,
             )
-            '''
+
 
             return render(request, 'maintenance/success.html', {'form': maintenanceRequest})
     else:
