@@ -113,12 +113,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "media/pictures")
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"), ]
 LOGIN_REDIRECT_URL = '/'
 
 # Email configuration
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'your-username@gmail.com'
-EMAIL_HOST_PASSWORD = 'your-password'
+EMAIL_HOST_USER = 'simplemaintenances@gmail.com'
+EMAIL_HOST_PASSWORD = 'SimpleMain'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True

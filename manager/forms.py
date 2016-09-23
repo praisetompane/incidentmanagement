@@ -27,4 +27,4 @@ class ProfileForm(forms.ModelForm):
 class MaintenanceForm(forms.ModelForm):
     class Meta:
         model = MaintananceRequest
-        fields = ('type', 'status', 'description',)
+        fields = ('type', 'status', 'description', 'picture')

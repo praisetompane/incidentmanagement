@@ -56,7 +56,7 @@ class MaintananceRequest(models.Model):
     type = models.CharField(max_length=10, choices=MAINTENACE_TYPE, default=1)
     status = models.CharField(max_length=10, choices=MAINTENACE_STATUS_CHOICE, default=1)
     description = models.TextField()
-    picture = models.BinaryField
+    picture = models.ImageField(upload_to='maintenancerequests/', blank=True)
     datelogged = models.DateTimeField(auto_now_add=True)
     userid = models.ForeignKey(User, default=1)
     maintainerId = models.ForeignKey(Maintainer, default=1)

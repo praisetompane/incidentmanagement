@@ -2,12 +2,12 @@
 # log/views.py
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.shortcuts import render_to_response
 from django.utils.crypto import get_random_string
 from django.views.decorators.csrf import csrf_exempt
-from django.core.mail import send_mail
 
 from manager.forms import *
 
@@ -57,24 +57,21 @@ def logout_page(request):
 @csrf_exempt
 def maintenance(request):
     if request.method == 'POST':
-        form = MaintenanceForm(request.POST)
+        form = MaintenanceForm(request.POST, request.FILES)
         if form.is_valid():
             user = request.user
             referenceNo = generateReferenceNumber()
-            maintenanceRequest = form.save(commit=False)
-            maintenanceRequest.referenceNumber = referenceNo
-            maintenanceRequest.save()
-
+            interimForm = form.save(commit=False)
+            interimForm.referenceNumber = referenceNo
+            interimForm.save()
             send_mail(
-                'Maintenance Request',
+                'Maintenance Request for' + interimForm.type,
                 'Thank you for logging you request, your reference number is:' + referenceNo,
-                'ssms@example.com',
+                'simplemaintenances@gmail.com',
                 [user.email],
-                fail_silently=False,
-            )
+                fail_silently=False)
 
-
-            return render(request, 'maintenance/success.html', {'form': maintenanceRequest})
+            return render(request, 'maintenance/success.html', {'form': interimForm, 'user' : user})
     else:
         form = MaintenanceForm()
 
