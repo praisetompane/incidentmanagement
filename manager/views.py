@@ -8,8 +8,6 @@ from django.shortcuts import render_to_response
 from django.utils.crypto import get_random_string
 from django.views.decorators.csrf import csrf_exempt
 
-from django.core.mail import send_mail
-
 from manager.forms import *
 
 
@@ -26,7 +24,12 @@ def register(request):
     if request.method == 'POST':
         userForm = UserForm(request.POST)
         if userForm.is_valid():
-            newUser = userForm.save()
+            newUser = User.objects.create_user(
+                username=userForm.cleaned_data['username'],
+                password=userForm.cleaned_data['password'],
+                email=userForm.cleaned_data['email']
+            )
+            newUser.save()
             profileForm = ProfileForm(request.POST, instance=newUser.profile)
             if profileForm.is_valid():
                 userProfile = profileForm.save(commit=False)
@@ -52,11 +55,6 @@ def logout_page(request):
 @login_required(login_url="login/")
 @csrf_exempt
 def maintenance(request):
-    '''
-        Email reference number
-
-            Maintainer responsible for an area
-    '''
     if request.method == 'POST':
         form = MaintenanceForm(request.POST)
         if form.is_valid():
@@ -65,13 +63,16 @@ def maintenance(request):
             maintenanceRequest = form.save(commit=False)
             maintenanceRequest.referenceNumber = referenceNo
             maintenanceRequest.save()
-            send_mail(
+            '''
+                 send_mail(
                 'Maintenance Request',
                 'Thank you for logging you request, your reference number is:' + referenceNo,
                 'ssms@example.com',
                 [user.email],
                 fail_silently=False,
             )
+            '''
+
             return render(request, 'maintenance/success.html', {'form': maintenanceRequest})
     else:
         form = MaintenanceForm()

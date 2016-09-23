@@ -1,22 +1,19 @@
 # Create your models here.
 
-from django.contrib.auth.models import User
-from django.db import models
-
-from manager.choices import *
 from datetime import datetime, timedelta
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from manager.choices import *
 
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     studentNumber = models.CharField(max_length=30, blank=True)
-    idNumber = models.CharField( max_length=30)
+    idNumber = models.CharField(max_length=30)
     cellphone = models.CharField(max_length=30)
-    residence = models.CharField( max_length=30)
+    residence = models.CharField(max_length=30)
     roomNumber = models.CharField(max_length=30)
 
     @receiver(post_save, sender=User)
@@ -28,7 +25,7 @@ class Profile(models.Model):
     def save_user_profile(sender, instance, **kwargs):
         instance.profile.save()
 
-'''
+
 class MaintenanceType(models.Model):
     name = models.CharField(max_length=10)
 
@@ -39,8 +36,6 @@ class MaintenanceStatus(models.Model):
     name = models.CharField(max_length=30)
 
     def __str__(self): return self.name
-
-'''
 
 
 class MaintainerType(models.Model):
@@ -65,8 +60,7 @@ class MaintananceRequest(models.Model):
     datelogged = models.DateTimeField(auto_now_add=True)
     userid = models.ForeignKey(User, default=1)
     maintainerId = models.ForeignKey(Maintainer, default=1)
-    expirationdate = models.DateTimeField(default=datetime.now()+timedelta(days=7)) #Expire after 7 days
-
+    expirationdate = models.DateTimeField(default=datetime.now() + timedelta(days=7))  # Expire after 7 days
 
 # Use the free Admin page for MaintananceRequests
 
