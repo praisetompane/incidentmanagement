@@ -1,18 +1,38 @@
 {% extends 'base.html' %}
 
+{% block title %} Welcome you dashboard {% endblock %}
+{% block head %} Dashboard {% endblock %}
+
 {% block content %}
     <div class="container">
         <div class="row">
-            <div class="jumbotron">
-                <h1>Hello</h1>
-                <!--
-                TODO: This dashboard will vary based on the User (Student vs Maintainer)
-                Maintainer: Outstanding maintenance work to do
-                            Need to think about Scheduling
-                Student: Past maintenance work
-                         Ability to give feedback
-                -->
-                <p>You are on your Dashboard</p>
+            <div class="col-md-8">
+                <div class="login-panel panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Outstanding Requests</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form>
+                            {% for request in outstandingrequests %}
+                                <p>
+                                    <a href="updaterequest/{{ request.id }}">{{ request }}</a>
+                                </p>
+                            {% endfor %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="login-panel panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Completed (Last 5)</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form>
+                            {{ completedrequests }}
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

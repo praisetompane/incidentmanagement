@@ -4,12 +4,12 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
-from django.shortcuts import render_to_response
+from django.shortcuts import render, get_object_or_404
 from django.utils.crypto import get_random_string
 from django.views.decorators.csrf import csrf_exempt
 
 from manager.forms import *
+from manager.models import *
 
 
 # Create your views here.
@@ -17,7 +17,14 @@ from manager.forms import *
 # view without authenticating
 @login_required(login_url="login/")
 def home(request):
-    return render(request, "home.html")
+    # Get all maintenance requests for a user
+    user = request.user
+    completedrequests = MaintananceRequest.objects.all().filter(userid=user.id)
+
+    # outstandingrequests = MaintananceRequest.objects.all().filter(userid=user.id).filter(status!='Complete')
+
+    return render(request, "home.html", {'outstandingrequests': completedrequests,
+                                         'completedrequests': completedrequests})
 
 
 @csrf_exempt
@@ -63,6 +70,7 @@ def maintenance(request):
             referenceNo = generateReferenceNumber()
             interimForm = form.save(commit=False)
             interimForm.referenceNumber = referenceNo
+            interimForm.userid_id = user.id
             interimForm.save()
             send_mail(
                 'Maintenance Request for' + interimForm.type,
@@ -71,23 +79,25 @@ def maintenance(request):
                 [user.email],
                 fail_silently=False)
 
-            return render(request, 'maintenance/success.html', {'form': interimForm, 'user' : user})
+            return render(request, 'maintenance/successcreate.html', {'form': interimForm, 'user': user})
     else:
         form = MaintenanceForm()
-
-    # sending an email in Django: https://docs.djangoproject.com/en/1.10/topics/email/
-    '''
-        request.FILES
-        https://docs.djangoproject.com/en/1.10/ref/forms/api/#binding-uploaded-files
-    '''
     return render(request, 'maintenance/maintenance.html', {'form': form})
-
-
-def existingMaintenanceRequests(request):
-    # after creating a new maintenace request, refresh the Track Existing Maintenance
-    # maintenacerequests.objects.all(where useris= request.userid)
-    render(request, 'maintenance/existingmaintenance.html')
 
 
 def generateReferenceNumber():
     return get_random_string(length=10)
+
+
+def updateMaintenance(request, pk):
+    if request.method == 'POST':
+        maintenanceRequest = get_object_or_404(MaintananceRequest, pk=pk)
+        form = MaintenanceForm(request.POST, request.FILES, instance=maintenanceRequest)
+        if form.is_valid():
+            form.save()
+            return render(request, 'maintenance/successupdate.html')
+    else:
+        maintenanceRequest = get_object_or_404(MaintananceRequest, pk=pk)
+        form = MaintenanceForm(request.POST, request.FILES, instance=maintenanceRequest)
+
+    return render(request, 'maintenance/requestdetail.html', {'form': form})

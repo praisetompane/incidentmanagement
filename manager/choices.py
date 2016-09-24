@@ -8,4 +8,5 @@ MAINTENACE_STATUS_CHOICE = [
     ('Acknowledged', ('Acknowledged')),
     ('In Progress', ('In Progress')),
     ('AwaitingUserSignoff', ('AwaitingUserSignoff')),
-    ('Complete', ('Complete'))]
+    ('Complete', ('Complete')),
+    ('Close', ('Close'))]
