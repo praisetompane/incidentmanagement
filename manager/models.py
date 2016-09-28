@@ -44,7 +44,7 @@ class MaintananceRequest(models.Model):
     datelogged = models.DateTimeField(auto_now_add=True)
     userid = models.ForeignKey(User)
     maintainerId = models.ForeignKey(Maintainer, default=1)
-    residence = models.ForeignKey(Residence)
+    residence = models.ForeignKey(Residence, default=1)
     expirationdate = models.DateTimeField(default=datetime.now() + timedelta(days=7))  # Expire after 7 days
 
     def __str__(self):

@@ -68,12 +68,15 @@ def createMaintenanceRequest(request):
             interimForm = form.save(commit=False)
             interimForm.referenceNumber = referenceNo
             interimForm.userid_id = user.id
+            userprofileresid = User.objects.get(id=user.id)
             interimForm.save()
 
+            '''
             residenceMaintainer = ResidenceMaintainer.objects.all().filter(residence=form.residence)
             residenceMaintainerUser = User.objects.all().filter(id=residenceMaintainer.maintainer)
+            '''
 
-            sendAcknowledgementEmail(form.type, referenceNo, [user.email, residenceMaintainerUser.emai])
+            sendAcknowledgementEmail(interimForm.type, referenceNo, [user.email])
             return render(request, 'maintenance/successcreate.html', {'form': interimForm, 'user': user})
     else:
         form = MaintenanceForm()
