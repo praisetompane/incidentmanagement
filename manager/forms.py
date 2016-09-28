@@ -21,7 +21,7 @@ class UserForm(forms.ModelForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ('studentNumber', 'idNumber', 'cellphone', 'residence', 'roomNumber')
+        fields = ('personnelNumber', 'idNumber', 'cellphone', 'residence', 'roomNumber')
 
 
 class MaintenanceForm(forms.ModelForm):

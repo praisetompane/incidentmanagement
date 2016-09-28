@@ -2,14 +2,14 @@
 # log/views.py
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-from django.core.mail import send_mail
+from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
-from django.utils.crypto import get_random_string
 from django.views.decorators.csrf import csrf_exempt
 
 from manager.forms import *
 from manager.models import *
+from manager.viewutilities import *
 
 
 # Create your views here.
@@ -31,28 +31,25 @@ def home(request):
 def register(request):
     if request.method == 'POST':
         userForm = UserForm(request.POST)
-        if userForm.is_valid():
-            newUser = User.objects.create_user(
-                username=userForm.cleaned_data['username'],
-                password=userForm.cleaned_data['password'],
-                email=userForm.cleaned_data['email']
-            )
+        profileForm = ProfileForm(request.POST)
+        if userForm.is_valid() & profileForm.is_valid():
+            newUser = User.objects.create_user(username=userForm.cleaned_data['username'],
+                                               password=userForm.cleaned_data['password'],
+                                               email=userForm.cleaned_data['email'])
             newUser.save()
             profileForm = ProfileForm(request.POST, instance=newUser.profile)
-            if profileForm.is_valid():
-                userProfile = profileForm.save(commit=False)
-                userProfile.save()
-            return HttpResponseRedirect('/register/success/')
+            userProfile = profileForm.save(commit=False)
+            userProfile.save()
+        return HttpResponseRedirect('/register/success/')
+
     else:
         userForm = UserForm()
         profileForm = ProfileForm()
-    return render(request, 'registration/register.html', {'userForm': userForm, 'profileForm': ProfileForm})
+        return render(request, 'registration/register.html', {'userForm': userForm, 'profileForm': ProfileForm})
 
 
 def register_success(request):
-    return render_to_response(
-        'registration/success.html',
-    )
+    return render(request, 'registration/success.html')
 
 
 def logout_page(request):
@@ -62,7 +59,7 @@ def logout_page(request):
 
 @login_required(login_url="login/")
 @csrf_exempt
-def maintenance(request):
+def createMaintenanceRequest(request):
     if request.method == 'POST':
         form = MaintenanceForm(request.POST, request.FILES)
         if form.is_valid():
@@ -72,24 +69,18 @@ def maintenance(request):
             interimForm.referenceNumber = referenceNo
             interimForm.userid_id = user.id
             interimForm.save()
-            send_mail(
-                'Maintenance Request for' + interimForm.type,
-                'Thank you for logging you request, your reference number is:' + referenceNo,
-                'simplemaintenances@gmail.com',
-                [user.email],
-                fail_silently=False)
 
+            residenceMaintainer = ResidenceMaintainer.objects.all().filter(residence=form.residence)
+            residenceMaintainerUser = User.objects.all().filter(id=residenceMaintainer.maintainer)
+
+            sendAcknowledgementEmail(form.type, referenceNo, [user.email, residenceMaintainerUser.emai])
             return render(request, 'maintenance/successcreate.html', {'form': interimForm, 'user': user})
     else:
         form = MaintenanceForm()
     return render(request, 'maintenance/maintenance.html', {'form': form})
 
 
-def generateReferenceNumber():
-    return get_random_string(length=10)
-
-
-def updateMaintenance(request, pk):
+def updateMaintenanceRequest(request, pk):
     if request.method == 'POST':
         maintenanceRequest = get_object_or_404(MaintananceRequest, pk=pk)
         form = MaintenanceForm(request.POST, request.FILES, instance=maintenanceRequest)
@@ -101,3 +92,13 @@ def updateMaintenance(request, pk):
         form = MaintenanceForm(request.POST, request.FILES, instance=maintenanceRequest)
 
     return render(request, 'maintenance/requestdetail.html', {'form': form})
+
+
+'''
+class MaintenanceRequestDetail(UpdateView):
+    model = MaintananceRequest
+    template_name = 'maintenance/requestdetail.html'
+    fields = ['type', 'status', 'description', 'picture']
+    success_url = '/books/'
+
+'''
