@@ -23,9 +23,8 @@ def home(request):
 
     # outstandingrequests = MaintananceRequest.objects.all().filter(userid=user.id).filter(status!='Complete')
 
-    return render(request, "home.html", {'outstandingrequests': completedrequests,
+    return render(request, "index.html", {'outstandingrequests': completedrequests,
                                          'completedrequests': completedrequests})
-
 
 @csrf_exempt
 def register(request):
@@ -71,16 +70,24 @@ def createMaintenanceRequest(request):
             userprofileresid = User.objects.get(id=user.id)
             interimForm.save()
 
+
+            # Need to get the user associated with this maintainer
+            # Link maintainer to User??
+
             '''
-            residenceMaintainer = ResidenceMaintainer.objects.all().filter(residence=form.residence)
-            residenceMaintainerUser = User.objects.all().filter(id=residenceMaintainer.maintainer)
+            residenceMaintainers = ResidenceMaintainer.objects.all().filter(residence=interimForm.residence)
+                        users = User.objects.all()
+
+                        for resMan in residenceMaintainers:
+                            residenceMaintainerUser = User.objects.all().filter(id=resMan.maintainer)
             '''
+
 
             sendAcknowledgementEmail(interimForm.type, referenceNo, [user.email])
             return render(request, 'maintenance/successcreate.html', {'form': interimForm, 'user': user})
     else:
         form = MaintenanceForm()
-    return render(request, 'maintenance/maintenance.html', {'form': form})
+    return render(request, 'maintenance/forms.html', {'form': form})
 
 
 def updateMaintenanceRequest(request, pk):

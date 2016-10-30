@@ -1,0 +1,5 @@
+Registrations
+  Complete form -> Register -> Site Admin updates People to staff (is_staff flag)
+                              {Need better way to flag to the site admine People who registered
+                              and requesting staff access}
+                    : Current proposed process is forth employee to notify the manager to update their User to Staff

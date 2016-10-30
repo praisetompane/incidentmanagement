@@ -8,3 +8,19 @@ Analysis
   UAM (User Access Management)
     Django.contrib.Auth
     Django Admin page
+
+
+// MAINTENANCE FEEDBACK
+
+    Interface/UI : Use Nedbank + Basecamop screeenshot
+    Job Card for requests
+        Sign by maintainer
+        Sign by student
+
+    Scheduling(dat to day)
+    Project Man : Long term
+
+
+    Business Intelligence
+        Top Man
+        Maintainer

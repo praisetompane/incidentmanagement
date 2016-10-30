@@ -6,8 +6,6 @@ from django.contrib.auth.models import User
 
 admin.site.register(MaintananceRequest)
 admin.site.register(Profile)
-admin.site.register(MaintainerType)
-admin.site.register(Maintainer)
 admin.site.register(ResidenceMaintainer)
 admin.site.register(Residence)
 
