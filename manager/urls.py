@@ -8,7 +8,8 @@ from manager import views
 urlpatterns = [
     url(r'^$', views.home, name='home'),
     url(r'^home/$', views.home, name='home'),
-    url(r'^home/updaterequest/(?P<pk>\d+)', views.updateMaintenanceRequest, name='requestdetail'),
-    url(r'^updaterequest/(?P<pk>\d+)', views.updateMaintenanceRequest, name='requestdetail'),
-    url(r'^maintain/', views.createMaintenanceRequest, name="maintenance")
+    url(r'^profile/', views.updateUser, name='profile'),
+    url(r'maintain/updaterequest/(?P<pk>\d+)', views.updateMaintenanceRequest, name='requestdetail'),
+    url(r'^maintain/$', views.createMaintenanceRequest, name="maintenance"),
+    url(r'^dashboard/$', views.dashboard, name="dashboard")
 ]

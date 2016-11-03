@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "main.html" %}
 
 {% block title %} Capture Maintenance Request {% endblock %}
 {% block head %} Capture Maintenance Request {% endblock %}
@@ -6,40 +6,51 @@
 {% block content %}
     <div class="container">
         <div class="row">
-            <div class="col-md-8">
-                <div class="login-panel panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Please fill in your maintenance request</h3>
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="login-panel panel panel-default col-md-6">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Please fill in your maintenance request</h3>
+                        </div>
+                        <div class="panel-body">
+                            <form method="post" action="." enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <table border="0">
+                                    {{ form }}
+                                </table>
+
+                                <div class="row">
+                                    <div class="col-md-12" style="text-align: center;">
+                                        <button type="submit"
+                                                class="btn btn-primary btn-sm"
+                                                value="login">
+                                            Submit
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12" style="text-align: center;">
+                                        <a href="/">Cancel</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                    <div class="panel-body">
-                        <!--TODO: Should this action attribute not point to "maintain/" -->
-                        <form method="post" action="." enctype="multipart/form-data">
-                            {% csrf_token %}
-                            <table border="0">
-                                {{ form }}
-                            </table>
-                            <div class="row center-block">
-                                <input type="submit" value="Submit"/>
-                                <a href="">Cancel</a>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="login-panel panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Track Existing Requests</h3>
-                    </div>
-                    <div class="panel-body">
-                        <form method="post" action=".">
-                            {% csrf_token %}
-                            <table border="0">
-                            </table>
-                        </form>
+                    <div class="login-panel panel panel-default col-md-3">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Current Requests</h3>
+                        </div>
+                        <div class="panel-body">
+                            <form>
+                                {% for request in requests %}
+                                    <p>
+                                        <a href="updaterequest/{{ request.id }}">{{ request }}</a>
+                                    </p>
+                                {% endfor %}
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 {% endblock %}

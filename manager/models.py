@@ -34,18 +34,19 @@ class MaintananceRequest(models.Model):
     expirationdate = models.DateTimeField(default=datetime.now() + timedelta(days=7))  # Expire after 7 days
 
     def __str__(self):
-        return self.type + ' request with reference number: ' + self.referenceNumber
+        return self.type + ' request : ' + self.referenceNumber
 
 
 class ResidenceMaintainer(models.Model):
     residence = models.ForeignKey(Residence)
     maintainer = models.ForeignKey(User)
 
-    def __str__(self): return  'Maintainer number: ' + self.maintainer + ' for residence number: ' + self.residence
+    def __str__(self): return 'Maintainer number: ' + self.maintainer + ' for residence number: ' + self.residence
 
 
 class UserType(models.Model):
     name = models.CharField(max_length=10)
+
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -54,7 +55,7 @@ class Profile(models.Model):
     cellphone = models.CharField(max_length=10)
     residence = models.ForeignKey(Residence, default=1)
     roomNumber = models.CharField(max_length=30)
-    usertype = models.ForeignKey(UserType)
+    usertype = models.ForeignKey(UserType, default=1)
 
     @receiver(post_save, sender=User)
     def create_user_profile(sender, instance, created, **kwargs):

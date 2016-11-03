@@ -19,12 +19,10 @@ from manager.viewutilities import *
 def home(request):
     # Get all maintenance requests for a user
     user = request.user
-    completedrequests = MaintananceRequest.objects.all().filter(userid=user.id)
+    requests = MaintananceRequest.objects.all().filter(userid=user.id)[5:10]
+    return render(request, "main.html", {'user': user,
+                                         'requests': requests})
 
-    # outstandingrequests = MaintananceRequest.objects.all().filter(userid=user.id).filter(status!='Complete')
-
-    return render(request, "index.html", {'outstandingrequests': completedrequests,
-                                         'completedrequests': completedrequests})
 
 @csrf_exempt
 def register(request):
@@ -39,13 +37,35 @@ def register(request):
             profileForm = ProfileForm(request.POST, instance=newUser.profile)
             userProfile = profileForm.save(commit=False)
             userProfile.save()
-        return HttpResponseRedirect('/register/success/')
+        else:
+            return render(request, 'registration/register.html', {'userForm': userForm, 'profileForm': ProfileForm})
+        return HttpResponseRedirect('/login')
 
     else:
         userForm = UserForm()
         profileForm = ProfileForm()
         return render(request, 'registration/register.html', {'userForm': userForm, 'profileForm': ProfileForm})
 
+
+def updateUser(request):
+    if request.method == 'POST':
+        userForm = UserForm(request.POST)
+        profileForm = ProfileForm(request.POST)
+        if userForm.is_valid() & profileForm.is_valid():
+            UserForm.save()
+            profileForm.save()
+        else:
+            return render(request, 'registration/register.html', {'userForm': userForm, 'profileForm': ProfileForm})
+
+    else:
+        user = get_object_or_404(User, pk=request.user.id)  # if post, then update
+        profile = Profile.objects.get(user=user)
+        userForm = UserForm(user)
+        profileForm = ProfileForm(profile)
+        return render(request, 'registration/register.html', {'userForm': userForm, 'profileForm': ProfileForm})
+
+
+# else get the user's details and default the forms
 
 def register_success(request):
     return render(request, 'registration/success.html')
@@ -70,7 +90,6 @@ def createMaintenanceRequest(request):
             userprofileresid = User.objects.get(id=user.id)
             interimForm.save()
 
-
             # Need to get the user associated with this maintainer
             # Link maintainer to User??
 
@@ -82,12 +101,19 @@ def createMaintenanceRequest(request):
                             residenceMaintainerUser = User.objects.all().filter(id=resMan.maintainer)
             '''
 
-
             sendAcknowledgementEmail(interimForm.type, referenceNo, [user.email])
+            # completedrequests = MaintananceRequest.objects.all().filter(userid=user.id)
             return render(request, 'maintenance/successcreate.html', {'form': interimForm, 'user': user})
     else:
+        user = request.user
+        userRequests = MaintananceRequest.objects.all().filter(userid=user.id)
         form = MaintenanceForm()
-    return render(request, 'maintenance/forms.html', {'form': form})
+    return render(request, 'maintenance/maintenance.html', {'form': form,
+                                                            'requests': userRequests})
+
+
+def dashboard(request):
+    return render(request, 'dashboard.html')
 
 
 def updateMaintenanceRequest(request, pk):
@@ -98,17 +124,10 @@ def updateMaintenanceRequest(request, pk):
             form.save()
             return render(request, 'maintenance/successupdate.html')
     else:
+        user = request.user
+        userRequests = MaintananceRequest.objects.all().filter(userid=user.id)
         maintenanceRequest = get_object_or_404(MaintananceRequest, pk=pk)
         form = MaintenanceForm(request.POST, request.FILES, instance=maintenanceRequest)
 
-    return render(request, 'maintenance/requestdetail.html', {'form': form})
-
-
-'''
-class MaintenanceRequestDetail(UpdateView):
-    model = MaintananceRequest
-    template_name = 'maintenance/requestdetail.html'
-    fields = ['type', 'status', 'description', 'picture']
-    success_url = '/books/'
-
-'''
+    return render(request, 'maintenance/requestdetail.html', {'form': form,
+                                                              'requests': userRequests})

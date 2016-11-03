@@ -1,27 +1,47 @@
 {% extends "base.html" %}
+{% load staticfiles %}
+
 {% block title %}User Registration{% endblock %}
 {% block head %}User Registration{% endblock %}
+
+<!-- Bootstrap Core CSS -->
+<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" xmlns="http://www.w3.org/1999/html">
+
+<!-- Custom CSS -->
+<link href="{% static 'css/sb-admin.css' %}" rel="stylesheet">
+
+<!-- Custom Fonts -->
+<link href="{% static 'font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 
 {% block content %}
     <div class="container">
         <div class="row">
-            <div class="col-md-4 col-md-offset-4">
+            <div class="col-md-8 col-md-offset-2">
                 <div class="login-panel panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Please Fill In Your Details</h3>
+                        <h3 class="panel-title">Please fill in your details</h3>
                     </div>
                     <div class="panel-body">
-                        <form method="post" action=".">
-                            {% csrf_token %}
-                            <table border="0">
-                                {{ userForm.as_table }}
-                                {{ profileForm.as_table }}
-                            </table>
+                        <form method="post" action="." role="form">
+
+                            {{ userForm.as_p }}
+                            {{ profileForm.as_p }}
 
                             <p class="bs-component">
-                            <center><input class="row center-block" class="btn btn-success btn-sm" type="submit"
-                                           value="Register"/></center>
-                            <center><a href="/">Login</a></center>
+                            <div style="text-align: center;">
+                                <button type="submit"
+                                        class="btn btn-primary btn-sm">
+                                    Register
+                                </button>
+                            </div>
+                            <div style="text-align: center;"><a href="/">Login</a></div>
 
                             </p>
                         </form>
