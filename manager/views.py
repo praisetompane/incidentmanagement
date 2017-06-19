@@ -26,6 +26,7 @@ def home(request):
 
 @csrf_exempt
 def register(request):
+    #instead of creating the user here, we'll call an endpoint
     if request.method == 'POST':
         userForm = UserForm(request.POST)
         profileForm = ProfileForm(request.POST)

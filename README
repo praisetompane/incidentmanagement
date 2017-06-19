@@ -16,3 +16,7 @@ http://127.0.0.1:8000/admin/
 
   Username: Shabi
   Password: #Soteria19
+
+
+References:
+  https://github.com/narenaryan/django-auth-pattern for the base code for authentication
