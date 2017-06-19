@@ -1,4 +1,4 @@
-This is the Simplified Maintenance Management System written in Django and Python
+(WIP)This is the Simplified Maintenance Management System written in Django and Python
 Setup Intructions
 chmod +x runproject.sh setup.sh
 ./setup.sh
