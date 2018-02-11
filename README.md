@@ -1,5 +1,6 @@
 # Simplified Maintenance Management System
-## This is a prototype of a generic maintenance request and tracking system (NEVER COMPLETED)
+## This is a prototype of a generic maintenance request and tracking system (NEVER COMPLETED).
+## Built with Django/Python and Bootstrap
 
 ### Application Tour
 
