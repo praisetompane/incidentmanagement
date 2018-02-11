@@ -1,1 +1,2 @@
-*.py linguist-language=Python
+incidentmanagement/*.py linguist-language=Python
+incidentmanagement/manager/*.py linguist-language=Python
