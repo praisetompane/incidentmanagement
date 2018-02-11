@@ -4,7 +4,11 @@
     Maintenance Request Saved Successfully
 {% endblock %}
 {% block content %}
+
+<div align="center" style="font-size: 18px;">
     Thank you for logging you request, your reference number is: {{form.referenceNumber}}.
     <p>
     An email has also been sent to {{user.email}} with this reference for future enquiries.
+    </p>
+</div>
 {% endblock %}
