@@ -3,34 +3,33 @@
 
 ### Application Tour
 
-
 ##### 0. Login
 
-![Alt text](/previewimages/Login.png?raw=true "Optional Title")
+<kbd><img src="/previewimages/Login.png" /></kbd>
 
 ##### 1. Register
 
-![Alt text](/previewimages/Register.png?raw=true "Optional Title")
+<kbd><img src="/previewimages/Register.png" /></kbd>
 
-##### 0. Homepage(So empty!!)
+##### 2. Homepage(So empty!!)
 
-![Alt text](/previewimages/Homepage.png?raw=true "Optional Title")
+<kbd><img src="previewimages/Homepage.png" /></kbd>
 
-##### 0. Dashboard
+##### 3. Dashboard
 
-![Alt text](/previewimages/Dashboard.png?raw=true "Optional Title")
+<kbd><img src="/previewimages/Dashboard.png" /></kbd>
 
-##### 0. Logging a maintenance request
+##### 4. Logging a maintenance request
 
-![Alt text](/previewimages/LoggingMaintenaceRequest.png?raw=true "Optional Title")
+<kbd><img src="/previewimages/LoggingMaintenaceRequest.png" /></kbd>
 
-##### 0. Confirmation page
+##### 5. Confirmation page
 
-![Alt text](/previewimages/Confirmatinopage.png?raw=true "Optional Title")
+<kbd><img src="/previewimages/Confirmatinopage.png" /></kbd>
 
-##### 0. Current Maintenance Request View
+##### 6. Current Maintenance Request View
 
-![Alt text](/previewimages/CurrentMaintenceRequests.png?raw=true "Optional Title")
+<kbd><img src="/previewimages/CurrentMaintenceRequests.png" /></kbd>
 
 ## Getting the App to Work Locally
 ### Prerequisites
