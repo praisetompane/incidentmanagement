@@ -1,5 +1,5 @@
 # Simplified Maintenance Management System
-## This is a prototype of a generic maintenance request and tracking system
+## This is a prototype of a generic maintenance request and tracking system (NEVER COMPLETED)
 
 ### Application Tour
 
